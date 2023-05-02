@@ -1,0 +1,54 @@
+{% load static %}
+<html lang="br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}" >
+    <title>Alteração da Condiçao de Saúde</title>
+</head>
+<body>
+
+    <div class="form">
+        <div class="title">Alteração da condição de saúde {{ condicaoDeSaude.nome }} do paciente {{ paciente.nome }}</div>
+        <div class="subtitle">Não deve ser alterado o identificador do paciente associado</div>
+        <form action="{% url 'editar_condicao_de_saude' paciente.id condicaoDeSaude.id %}" method="POST">
+            {% csrf_token %}
+            <div class="input-container ic1">
+                <input type="text" name="nome" id="nome" placeholder="" class="input" value="{{ condicaoDeSaude.nome }}">
+                <div class="cut"></div>
+                <label for="nome" class="placeholder">Nome da Condição de Saúde: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="text" name="descricao" id="descricao" placeholder="" class="input" value="{{ condicaoDeSaude.descricao }}">
+                <div class="cut"></div>
+                <label for="descricao" class="placeholder">Descrição da Condição de Saúde: </label>
+            </div>
+            <div class="input-container ic2">
+                <select name="area" id="area" class="input">
+                    <option value="Psicológico" {% if condicaoDeSaude.area == 'Psicológico' %} selected {% endif %}>Psicológico</option>
+                <option value="Psiquiátrico" {% if condicaoDeSaude.area == 'Psiquiátrico' %} selected {% endif %}>Psiquiátrico</option>
+                <option value="Endocrinológico" {% if condicaoDeSaude.area == 'Endocrinológico' %} selected {% endif %}>Endocrinológico</option>
+                <option value="Nutricional" {% if condicaoDeSaude.area == 'Nutricional' %} selected {% endif %}>Nutricional</option>
+                <option value="Neurológico" {% if condicaoDeSaude.area == 'Neurológico' %} selected {% endif %}>Neurológico</option>
+                <option value="Físico" {% if condicaoDeSaude.area == 'Físico' %} selected {% endif %}>Físico</option>
+                </select>
+                <div class="cut"></div>
+                <label for="area" class="placeholder">Área da Condição de Saúde: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="number" name="gravidade" id="gravidade" placeholder="" class="input" value="{{ condicaoDeSaude.gravidade }}">
+                <div class="cut"></div>
+                <label for="gravidade" class="placeholder">Gravidade da Condição de Saúde: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="number" name="idDoPaciente_id" id="idDoPaciente_id" value="{{ paciente.id }}" class="input" value="{{ paciente.id }}" disabled>
+                <div class="cut"></div>
+                <label for="idDoPaciente_id" class="placeholder">Identificador do Paciente: </label>
+            </div>
+            <input type="submit" class="submissao">
+        </form>
+    </div>
+    
+</body>
+</html>

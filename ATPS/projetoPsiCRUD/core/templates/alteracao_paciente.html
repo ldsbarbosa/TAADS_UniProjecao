@@ -1,0 +1,55 @@
+{% load static %}
+<html lang="br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}" >
+    <title>Alteração de Paciente</title>
+</head>
+<body>
+
+    <div class="form">
+        <div class="title">Alteração do paciente {{ paciente.nome }}</div>
+        <form action="{% url 'editar_paciente' paciente.id %}" method="POST">
+            {% csrf_token %}
+            <div class="input-container ic1">
+                <input type="text" name="nome" id="nome" placeholder="" class="input" value="{{ paciente.nome }}">
+                <div class="cut"></div>
+                <label for="nome" class="placeholder">Nome do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <select name="sexo" id="sexo" class="input">
+                    <option value="Masculino" {% if paciente.sexo == 'Masculino' %} selected {% endif %}>Masculino</option>
+                <option value="Feminino" {% if paciente.sexo == 'Feminino' %} selected {% endif %}>Feminino</option>
+                </select>
+                <div class="cut"></div>
+                <label for="sexo" class="placeholder">Sexo do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="email" name="email" id="email" placeholder="" class="input" value="{{ paciente.email }}">
+                <div class="cut"></div>
+                <label for="email" class="placeholder">Email do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="text" name="telefone" id="telefone" placeholder=""
+                class="input" value="{{ paciente.telefone }}">
+                <div class="cut"></div>
+                <label for="telefone" class="placeholder">Telefone do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="text" minlength="11" maxlength="14" name="cpf" id="cpf" placeholder="" class="input" value="{{ paciente.cpf }}">
+                <div class="cut"></div>
+                <label for="cpf" class="placeholder">CPF do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="date" name="data_de_nascimento" id="data_de_nascimento" placeholder="" min="1950-01-01" max="2015-12-31" class="input" value="{{ paciente.data_de_nascimento }}">
+                <div class="cut"></div>
+                <label for="data_de_nascimento" class="placeholder">Data de nascimento do Paciente: </label>
+            </div>
+            <input type="submit" class="submissao">
+        </form>
+    </div>
+    
+</body>
+</html>

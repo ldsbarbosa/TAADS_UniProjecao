@@ -1,0 +1,26 @@
+<html lang="br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro do Psicologo</title>
+</head>
+<body>
+    {%if erro%}
+        {{ erro }}
+    {%endif%}
+    <form action="{% url 'cadastro' %}" method="POST">
+        {% csrf_token %}
+        <label for="username">Nome do usuário (Psicologo): </label>
+        <input type="text" name="username" id="username" placeholder="Digite seu nome"><br>
+        <label for="email">Endereço de correio eletrônico (E-mail): </label>
+        <input type="text" name="email" id="email" placeholder="Digite seu email"><br>
+        <label for="senha">Senha: </label>
+        <input type="password" name="senha" id="senha" placeholder="Digite sua senha"><br>
+        <input type="submit" name="submissao" value="Cadastrar">
+    </form>
+    
+    <p>Caso possua cadastro ou conseguiu se cadastrar com sucesso,
+        dirija-se à <a href="{% url 'autenticacao' %}">página de autenticacao</a>.</p>
+</body>
+</html>

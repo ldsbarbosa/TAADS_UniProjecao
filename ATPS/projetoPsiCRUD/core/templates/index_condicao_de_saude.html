@@ -1,0 +1,97 @@
+{% load static %}
+<html lang="br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}" >
+    <title>Controle das Condicoes de Saúde</title>
+</head>
+<body>
+    {%if retorno_salvar %}
+        {{ retorno_salvar }}
+    {% endif %}
+    <h1>Controle das condições de Saúde do Paciente {{ paciente.nome }}</h1>
+    {% if user.is_authenticated %}
+        <h4>Olá, psicologo {{ user.username }}.</h4>
+    {% endif %}
+
+    <div class="container">
+        <table border="1" class="tabelaRead">
+            <thead>
+                <tr class="table-header">
+                    <th class="col">ID - Nome</th>
+                    <th class="col">Descricao</th>
+                    <th class="col">Area</th>
+                    <th class="col">Gravidade</th>
+                    <th class="col">Identificador do Paciente</th>
+                    <th class="col">Alterar</th>
+                    <th class="col">Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for condicaoDeSaude in condicoesDeSaude %}
+                <tr>
+                    <td class="col">{{ condicaoDeSaude.id }} - {{ condicaoDeSaude.nome }}</td>
+                    <td class="col">{{ condicaoDeSaude.descricao }}</td>
+                    <td class="col">{{ condicaoDeSaude.area }}</td>
+                    <td class="col">{{ condicaoDeSaude.gravidade }}</td>
+                    <td class="col">{{ condicaoDeSaude.idDoPaciente_id }}</td>
+                    <td class="col"><a href="{% url 'alterar_condicao_de_saude' paciente.id condicaoDeSaude.id %}">Alterar {{ condicaoDeSaude.nome }}</a></td>
+                    <td class="col"><a href="{% url 'excluir_condicao_de_saude' paciente.id condicaoDeSaude.id %}">Excluir {{ condicaoDeSaude.nome }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <a href="{% url 'exportar_condicao_de_saude' paciente.id %}"><button class="submissao">Exportar Relatorio De Condições de Saúde</button></a>
+    </div>
+    <div class="form">
+        <div class="titulo">Cadastro das condições médicas</div>
+        <div class="subtitulo">Não deve ser alterado o identificador do paciente associado</div>
+        <form action="{% url 'salvar_condicao_de_saude' paciente.id %}" method="POST">
+            {% csrf_token %}
+            <div class="input-container ic1">
+                <input type="text" name="nome" id="nome" placeholder="" class="input">
+                <div class="cut"></div>
+                <label for="nome" class="placeholder">Nome da Condição de Saúde: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="text" name="descricao" id="descricao" placeholder="" class="input">
+                <div class="cut"></div>
+                <label for="descricao" class="placeholder">Descrição da Condição de Saúde: </label>
+            </div>
+            <div class="input-container ic2">
+                <select name="area" id="area" class="input">
+                    <option value="Psicológico">Psicológico</option>
+                    <option value="Psiquiátrico">Psiquiátrico</option>
+                    <option value="Endocrinológico">Endocrinológico</option>
+                    <option value="Nutricional">Nutricional</option>
+                    <option value="Neurológico">Neurológico</option>
+                    <option value="Físico">Físico</option>
+                </select>
+                <div class="cut"></div>
+                <label for="area" class="placeholder">Área da Condição de Saúde: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="number" name="gravidade" id="gravidade" placeholder="" class="input">
+                <div class="cut"></div>
+                <label for="gravidade" class="placeholder">Gravidade da Condição de Saúde: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="number" name="idDoPaciente_id" id="idDoPaciente_id" value="{{ paciente.id }}" class="input">
+                <div class="cut"></div>
+                <label for="idDoPaciente_id" class="placeholder">Identificador do Paciente: </label>
+            </div>
+            <input type="submit" class="submissao">
+        </form>
+    </div>
+
+
+    {% if user.is_authenticated %}
+        Caso prefira sair do sistema, dirija-se à <a href="{% url 'autenticacao' %}">página de autenticacao</a> ou retornar à <a href="{% url 'home' %}">relação de pacientes</a>.
+    {% endif %}
+</body>
+</html>

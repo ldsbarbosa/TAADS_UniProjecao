@@ -1,0 +1,105 @@
+{% load static %}
+<html lang="br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}" >
+    <title>Controle de Pacientes</title>
+</head>
+<body>
+    {%if retorno_salvar %}
+        {{ retorno_salvar }}
+    {% endif %}
+    <h1>Controle de pacientes</h1>
+    {% if user.is_authenticated %}
+        <h4>Olá, psicologo {{ user.username }}.</h4>
+    {% endif %}
+    <div class="container">
+        <table border="1" class="tabelaRead">
+            <thead>
+                <tr class="table-header">
+                    <th class="col">ID - Nome</th>
+                    <th class="col">Idade</th>
+                    <th class="col">Sexo</th>
+                    <th class="col">Email</th>
+                    <th class="col">Telefone</th>
+                    <th class="col">CPF</th>
+                    <th class="col">Data de Nascimento</th>
+                    <th class="col">Condição de Saúde</th>
+                    <th class="col">Alterar</th>
+                    <th class="col">Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for paciente in pacientes %}
+                <tr class="table-row">
+                    <td class="col">{{ paciente.id }} - {{ paciente.nome }}</td>
+                    <td class="col">{{ paciente.idade }}</td>
+                    <td class="col">{{ paciente.sexo }}</td>
+                    <td class="col">{{ paciente.email }}</td>
+                    <td class="col">{{ paciente.telefone }}</td>
+                    <td class="col">{{ paciente.cpf }}</td>
+                    <td class="col">{{ paciente.data_de_nascimento }}</td>
+                    <td class="col"><a href="{% url 'index_condicao_de_saude' paciente.id %}">Condição de Saúde do {{ paciente.nome }}</a></td>
+                    <td class="col"><a href="{% url 'alterar_paciente' paciente.id %}">Alterar {{ paciente.nome }}</a></td>
+                    <td class="col"><a href="{% url 'excluir_paciente' paciente.id %}">Excluir {{ paciente.nome }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <a href="{% url 'exportar_paciente'%}"><button class="submissao">Exportar Relatorio De Pacientes</button></a>
+    </div>
+    <div class="form">
+        <div class="titulo">Cadastro de novos pacientes</div>
+        <div class="subtitulo">Crie novos pacientes com o formulário!</div>
+        <form action="{% url 'salvar_paciente' %}" method="POST">
+            {% csrf_token %}
+            <div class="input-container ic1">
+                <input type="text" name="nome" id="nome" placeholder="" class="input">
+                <div class="cut"></div>
+                <label for="nome" class="placeholder">Nome do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <select name="sexo" id="sexo" class="input">
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                </select>
+                <div class="cut"></div>
+                <label for="sexo" class="placeholder">Sexo do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="email" name="email" id="email" placeholder="" class="input">
+                <div class="cut"></div>
+                <label for="email" class="placeholder">Email do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="text" name="telefone" id="telefone" placeholder=""
+                class="input">
+                <div class="cut"></div>
+                <label for="telefone" class="placeholder">Telefone do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="text" minlength="11" maxlength="14" name="cpf" id="cpf" placeholder="" class="input">
+                <div class="cut"></div>
+                <label for="cpf" class="placeholder">CPF do Paciente: </label>
+            </div>
+            <div class="input-container ic2">
+                <input type="date" name="data_de_nascimento" id="data_de_nascimento" placeholder="" min="1950-01-01" max="2015-12-31" class="input">
+                <div class="cut"></div>
+                <label for="data_de_nascimento" class="placeholder">Data de nascimento do Paciente: </label>
+            </div>
+            <input type="submit" class="submissao">
+        </form>
+    </div>
+
+    <div class="container">
+        {% if user.is_authenticated %}
+            Caso prefira sair do sistema, dirija-se à <a href="{% url 'autenticacao' %}">página de autenticacao</a>.
+        {% endif %}
+    </div>
+</body>
+</html>

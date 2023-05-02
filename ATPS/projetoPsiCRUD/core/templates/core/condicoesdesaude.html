@@ -1,0 +1,28 @@
+{% extends 'exportacao_condicao_de_saude.html' %}
+
+{% block conteudo_condicao %}
+
+<h1>Lista de Condições de Saúde do {{ paciente.nome }}</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID - Nome</th>
+            <th>Descricao</th>
+            <th>Area</th>
+            <th>Gravidade</th>
+            <th>Identificador do Paciente</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for condicaoDeSaude in condicoesDeSaude %}
+            <tr>
+                <td>{{ condicaoDeSaude.id }} - {{ condicaoDeSaude.nome }}</td>
+                <td>{{ condicaoDeSaude.descricao }}</td>
+                <td>{{ condicaoDeSaude.area }}</td>
+                <td>{{ condicaoDeSaude.gravidade }}</td>
+                <td>{{ condicaoDeSaude.idDoPaciente_id }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
